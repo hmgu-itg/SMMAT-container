@@ -11,13 +11,13 @@ usage() {
 
 if [ ! -f "$vcf" ] || [ -z "$(tabix -H $vcf)" ]; then
 	usage
-	>2 echo -e ERROR : File \"$vcf\" is not tabixed or is malformed.
+	2> echo -e ERROR : File \"$vcf\" is not tabixed or is malformed.
 	exit 3
 fi
 
 if [ ! -f "$vcf.tbi" ]; then
 	usage
-        >2 echo -e ERROR : File \"$vcf\" does not exist.
+        2> echo -e ERROR : File \"$vcf\" does not exist.
 	exit 2
 fi
 
@@ -26,13 +26,13 @@ if [ -z "$cohort_name" ] || [ -z "vcf" ]; then
 	exit 1
 fi
 
-firstchr=$(zgrep -m1 -f '#CHROM' -A1 | tail -1 | cut -f1)
+firstchr=$(zgrep -m1 -F '#CHROM' -A1 | tail -1 | cut -f1)
 
 RENAMECHR=0
 RENAMECMD=cat
 OLDCHR=$firstchr
 if [ -z "echo $firstchr | grep chr" ]; then
-	>2 echo Warning: Your VCF does not follow the GRCh38 chromosome naming convention. Will be updated by the script.
+	2> echo Warning: Your VCF does not follow the GRCh38 chromosome naming convention. Will be updated by the script.
 	RENAMECHR=1
 	RENAMECMD="awk -F$'\t' '{if($1!~/^chr/){$1=\"chr\"$1}}1'"
 	firstchr=chr$firstchr
@@ -46,7 +46,7 @@ if [ -z "echo $secondchr | grep chr" ]; then
 fi
 
 if [ "$firstchr" != "chr1" ] || [ "$secondchr"!= "chr2" ]]; then
-	>2 echo Warning: single-chromosome file detected ($firstchr)
+	2> echo Warning: single-chromosome file detected ($firstchr)
 	ISWG=0
 fi
 
