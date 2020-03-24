@@ -47,7 +47,7 @@ if [ -z "echo $secondchr | grep chr" ]; then
 fi
 
 if [ "$firstchr" != "chr1" ] || [ "$secondchr"!= "chr2" ]]; then
-	2> echo Warning: single-chromosome file detected ($firstchr)
+	2> echo Warning: single-chromosome file detected for $firstchr
 	ISWG=0
 fi
 
