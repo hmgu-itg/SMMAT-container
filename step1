@@ -26,7 +26,7 @@ if [ -z "$cohort_name" ] || [ -z "vcf" ]; then
 	exit 1
 fi
 
-firstchr=$(zgrep -m1 -F '#CHROM' -A1 | tail -1 | cut -f1)
+firstchr=$(zgrep -m1 -F '#CHROM' -A1 $vcf| tail -1 | cut -f1)
 
 RENAMECHR=0
 RENAMECMD=cat
@@ -37,6 +37,7 @@ if [ -z "echo $firstchr | grep chr" ]; then
 	RENAMECMD="awk -F$'\t' '{if($1!~/^chr/){$1=\"chr\"$1}}1'"
 	firstchr=chr$firstchr
 fi
+2> INFO: Detected first chromosome as $firstchr
 
 ISWG=1
 TESTCHR=${OLDCHR/1/2}
